@@ -12,7 +12,8 @@
         :verb :GET}
       uuid4 []
   {:status 200
-   :body (str (uuid/v4))})
+   :httpbis/jsonify true
+   :body {:uuid (str (uuid/v4))}})
 
 (defroutes home-routes
   (GET "/" [] (home))

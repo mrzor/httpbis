@@ -5,6 +5,7 @@
             [hiccup.middleware :refer [wrap-base-url]]
             [compojure.handler :as handler]
             [compojure.route :as route]
+            [clojure.data.json :as json]
             [httpbis.routes.home :refer [home-routes]]))
 
 (defn init []
@@ -17,7 +18,18 @@
   (route/resources "/")
   (route/not-found "Not Found"))
 
+(defn wrap-jsonify [handler]
+  (fn [request]
+     (let [response (handler request)]
+       (if (:httpbis/jsonify response)
+         (-> response
+             (assoc-in [:headers "Content-Type"] "application/json")
+             (update :body json/write-str)
+         )
+         response))))
+
 (def app
   (-> (routes home-routes app-routes)
       (handler/site)
-      (wrap-base-url)))
+      (wrap-base-url)
+      (wrap-jsonify)))
