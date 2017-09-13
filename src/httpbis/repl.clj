@@ -1,7 +1,8 @@
 (ns httpbis.repl
   (:use httpbis.handler
         ring.server.standalone
-        [ring.middleware file-info file]))
+        [ring.middleware file-info file])
+  (:import (org.eclipse.jetty.server Server)))
 
 (defonce server (atom nil))
 
@@ -32,3 +33,11 @@
 (defn stop-server []
   (.stop @server)
   (reset! server nil))
+
+(if (and @server (.isStarted ^Server @server))
+  (println "httpbis.repl: not restarting existing Jetty server")
+  (when (System/getenv "HTTPBIS_MAGIC_LAUNCH")
+    (do
+      (println "httpbis.repl: starting server because HTTPBIS_MAGIC_LAUNCH is set")
+      (start-server)))
+  )
