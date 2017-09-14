@@ -12,22 +12,23 @@ For now it's using Compojure. That's not set in stone.
 
 Here is the most important stuff available in the original:
 
-[ ] The index / documentation page
-[ ] Compression routes (gzip, brotli, deflate)
-[ ] Basic verb routes (get post patch put delete anything)
-[ ] Redirect routes
-[ ] Cookie routes
-[ ] HTTP auth routes
-[ ] Robots routes
-[ ] Cache / ETag routes
-[ ] Image routes
-[ ] Link route
-[ ] Delay/drip routes
-[ ] Stream/range routes
+- [ ] The index / documentation page
+- [ ] Compression routes (gzip, brotli, deflate)
+- [ ] Basic verb routes (get post patch put delete anything)
+- [ ] Redirect routes
+- [ ] Cookie routes
+- [ ] HTTP auth routes
+- [ ] Robots routes
+- [ ] Cache / ETag routes
+- [ ] Image routes
+- [ ] Link route
+- [ ] Delay/drip routes
+- [ ] Stream/range routes
 
 Here are some extras :
 
-[ ] Spider maze (advanced link)
+- [ ] Spider maze (advanced link)
+- [ ] Teapot route
 
 ## Prerequisites
 
