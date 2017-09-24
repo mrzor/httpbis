@@ -4,6 +4,7 @@
 ; XXX get help back
 
 (defonce server (atom nil))
+(defonce debug (atom nil))
 
 (defn ^:httpbis/endpoint
 ^{:doc "Returns a new UUID4"
@@ -19,9 +20,10 @@
   :path "/ip"
   :verb :get}
 ip [request]
+  (reset! debug request)
   {:status 200
    :httpbis/jsonify true
-   :body {:origin (:remote-addr request)}})
+   :body {:ip (:remote-addr (:request request))}})
 
 (defn ^:httpbis/endpoint
 ^{:doc "Returns user-agent."
@@ -30,7 +32,8 @@ ip [request]
 user-agent [request]
   {:status 200
    :httpbis/jsonify true
-   :body {:user-agent (get-in request [:headers "user-agent"])}})
+   :body {:user-agent
+          (get-in request [:request :headers :user-agent])}})
 
 ;; Bit of meta magic so that you just have to add a new
 ;; endpoint to the file and it will be served and indexed
