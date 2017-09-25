@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: yada/oauth2:1.2.9">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/yada/oauth2/1.2.9/oauth2-1.2.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
