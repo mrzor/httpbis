@@ -27,27 +27,36 @@ ip [context]
 user-agent [context]
   {:user-agent (get-in context [:request :headers :user-agent])})
 
-; XXX endpoints should be defrecord based instead of metadata based
-
-(defn ^:httpbis/endpoint
-^{:doc "Returns POST data."
-  :path "/post"
-  :verb :post}
-simple-post [context]
-  (reset! debug context)
+; request-reflector is an endpoint like fn but it is not
+; fully specified (no documentation, path or verb set)
+;
+(defn request-reflector [context]
   (let [interesting-keys (->> (keys (:request context))
                               (remove #(= (namespace %) "aleph")))]
     (select-keys (:request context) interesting-keys)))
 
-(defn ^:httpbis/endpoint
-^{:doc "Returns PUT data."
-  :path "/put"
-  :verb :put}
-simple-post [context]
-  (reset! debug context)
-  (let [interesting-keys (->> (keys (:request context))
-                              (remove #(= (namespace %) "aleph")))]
-    (select-keys (:request context) interesting-keys)))
+
+(defn http-verb-to-metaendpoint
+  "Takes a string as its only parameter, this string
+  should be an HTTP verb.
+  Produces a map suitable to be used as metaendpoint i.e.
+  as metadata around a fn."
+  [verb]
+  {:httpbis/endpoint true
+   :doc (str "Returns " (.toUpperCase verb) " data.")
+   :path (str "/" verb)
+   :verb (keyword verb)
+   :sym (symbol (str "metaendpoint-" verb))})
+
+(def http-verbs-metaendpoints
+  (map http-verb-to-metaendpoint ["get" "post" "patch"
+                                  "put" "delete"]))
+
+(doseq [{s :sym
+         :as metaendpoint} http-verbs-metaendpoints]
+  (let [sm (with-meta s metaendpoint)]
+    (intern *ns* s request-reflector)))
+
 
 ;; Bit of meta magic so that you just have to add a new
 ;; endpoint to the file and it will be served and indexed
