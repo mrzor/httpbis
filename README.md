@@ -6,7 +6,7 @@ Check out [httpbin.org](httpbin.org).
 Reproduce (in spirit) its features using Clojure and Ring, and you get httpbis.
 
 
-For now it's using Compojure. That's not set in stone.
+Built with yada, mostly.
 
 ## TODO
 
